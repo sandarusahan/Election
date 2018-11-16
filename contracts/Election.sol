@@ -14,6 +14,8 @@ contract Election {
 
     mapping(uint => Candidate) public candidates;
 
+    mapping(address => bool) public voters;
+
     uint public  candidatesCount;
 
     constructor () public {
@@ -27,4 +29,15 @@ contract Election {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _fName, _lName, _party, 0);
     } 
+
+    function vote(uint _candidateId) public {
+
+        require(!voters[msg.sender]);
+
+        require(_candidateId>0 && _candidateId <= candidatesCount);
+
+        voters[msg.sender] = true;
+
+        candidates[_candidateId].voteCount ++;
+    }
 }
